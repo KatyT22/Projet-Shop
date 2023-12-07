@@ -43,5 +43,8 @@ Inside the **alten-shop-back-products\back** folder, launch the back with "mvn s
 
 ________________________
 
+# Launch application
+url : http://localhost:4200/products
+
 
 
