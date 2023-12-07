@@ -1,6 +1,6 @@
-# ProjetAlten
+# ProjetAlten (*Branch* :  shopProducts_v1)
 
-#Versions
+**Versions**
 
 Java : 21
 
@@ -12,9 +12,8 @@ Node.js : 20.10
 
 Postgresql : 16.1
 
-**Branch** :  shopProducts_v1
 
-**Connect front to back** :
+# Connect front to back
 In the "**product.service.ts**" file in the "**ProductService**" class and in the "**getProducts()**" method add the back path (**http://localhost:8080/api/products**) :
 
 _______________________
@@ -36,9 +35,10 @@ getProducts(): Observable<Product[]> {
 
 ____________________
 
-
+# Front 
 Inside the **alten-shop-back-products\front\src\app>** folder, launch the front with the "ng serve" command.
 
+# Back
 Inside the **alten-shop-back-products\back** folder, launch the back with "mvn spring-boot:run" the command.
 
 ________________________
