@@ -1,9 +1,15 @@
 # ProjetAlten
-Versions
+
+#Versions
+
 Java : 21
+
 Spring Boot : 3.2.0
+
 Maven : 3.9.6
+
 Node.js : 20.10
+
 Postgresql : 16.1
 
 **Branch** :  shopProducts_v1
