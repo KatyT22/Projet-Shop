@@ -104,7 +104,9 @@ ________________________
 # Launch application
 url : http://localhost:4200/products
 
-test Swagger : http://localhost:8080/swagger-ui/index.html#/product-controller/getAllProducts
+# API Tests
+
+Test with Swagger : http://localhost:8080/swagger-ui/index.html#/product-controller/getAllProducts
 
 
 
