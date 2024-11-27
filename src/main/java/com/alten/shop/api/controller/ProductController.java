@@ -1,7 +1,7 @@
 package com.alten.shop.api.controller;
 
 import com.alten.shop.api.model.Product;
-import com.alten.shop.api.repository.ProductRepository;
+import com.alten.shop.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,16 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    ProductRepository productRepository;
-
+    ProductService productService;
     /**
      * Retrieve all products
-     * @param name
      * @return products list
      */
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<Product>> getAllProducts() {
         try {
             List<Product> products = new ArrayList<Product>();
-            products = productRepository.findAll();
+            products = productService.getAllProducts();
             if (products.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -39,15 +37,14 @@ public class ProductController {
 
     /**
      * Create a new products
-     * @param product
+     * @param productBody
      * @return product
      */
-    @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    @PostMapping("/products/new")
+    public ResponseEntity<Product> createProduct(@RequestBody Product productBody) {
         try {
-            Product _product = productRepository
-                    .save(new Product(product.getId(), product.getCode(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantity(), product.getInventoryStatus(), product.getCategory(), product.getImage(), product.getRating())); //TODO bonne utilisation du constructeur ?
-            return new ResponseEntity<>(_product, HttpStatus.CREATED);
+            Product newProduct = productService.createProduct(productBody);
+            return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -60,12 +57,16 @@ public class ProductController {
      */
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
-        Optional<Product> productData = productRepository.findById(id);
 
-        if (productData.isPresent()) {
-            return new ResponseEntity<>(productData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Optional<Product> product = productService.getProductById(id);
+            if(product.isPresent()){
+                return new ResponseEntity<>(product.get(), HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,30 +74,24 @@ public class ProductController {
     /**
      * Update details of product {id} if it exists
      * @param id
-     * @param product
+     * @param productBody
      * @return product
      */
     @PatchMapping("/products/{id}")
-    public ResponseEntity<Product> updateTutorial(@PathVariable("id") long id, @RequestBody Product product) {
-        Optional<Product> productData = productRepository.findById(id);
-
-        if (productData.isPresent()) {
-            Product _product = productData.get();
-            _product.setCode(product.getCode());
-            _product.setName(product.getName());
-            _product.setDescription(product.getDescription());
-            _product.setPrice(product.getPrice());
-            _product.setId(product.getId());
-            _product.setImage(product.getImage());
-            _product.setCategory(product.getCategory());
-            _product.setInventoryStatus(product.getInventoryStatus());
-            _product.setQuantity(product.getQuantity());
-            _product.setRating(product.getRating());
-            return new ResponseEntity<>(productRepository.save(_product), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @RequestBody Product productBody) {
+        try {
+            Optional<Product> savedProductData = productService.getProductById(id);
+            if (savedProductData.isPresent() && productBody.getId()==savedProductData.get().getId()) {
+               return new ResponseEntity<>(productService.updateProduct(id, productBody), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     /**
      * Remove product {id}
@@ -104,9 +99,9 @@ public class ProductController {
      * @return HttpStatus
      */
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") long id) {
         try {
-            productRepository.deleteById(id);
+            productService.deleteProduct(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
