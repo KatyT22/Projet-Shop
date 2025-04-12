@@ -1,4 +1,4 @@
-# ProjetAlten (*Branch* :  shopProducts_v1)
+# Projet shop (*Branch* :  shopProducts_v1_Back)
 
 **Versions**
 
@@ -107,6 +107,9 @@ url : http://localhost:4200/products
 # API Tests
 
 Test with Swagger : http://localhost:8080/swagger-ui/index.html#/product-controller/getAllProducts
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> shopProducts_v1
