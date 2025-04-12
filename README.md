@@ -1,4 +1,4 @@
-# ProjetAlten (*Branch* :  shopProducts_v1)
+# Projet shop (*Branch* :  shopProducts_v1_Back)
 
 **Versions**
 

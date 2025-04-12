@@ -4,7 +4,6 @@ import com.alten.shop.api.model.Operator;
 import com.alten.shop.api.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +18,11 @@ public class OperatorController {
 
     @GetMapping("/operators")
     public ResponseEntity<List<Operator>> getAllOperators(){
-        List<Operator> operators = new ArrayList<>();
         try {
-            operators = operatorService.getAllOperators();
-            if(!operators.isEmpty()){
+            List<Operator> operators = operatorService.getAllOperators();
+            if(!operators.isEmpty()) {
                 return new ResponseEntity<>(operators, HttpStatus.OK);
-            }else{
+            } else{
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         }catch(Exception e){

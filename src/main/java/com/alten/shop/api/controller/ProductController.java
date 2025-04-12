@@ -60,11 +60,7 @@ public class ProductController {
 
         try {
             Optional<Product> product = productService.getProductById(id);
-            if(product.isPresent()){
-                return new ResponseEntity<>(product.get(), HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

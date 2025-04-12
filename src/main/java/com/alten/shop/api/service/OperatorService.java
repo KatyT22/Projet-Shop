@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface OperatorService {
     public Operator getOperatorById(Long id);
     public List<Operator> getAllOperators();
